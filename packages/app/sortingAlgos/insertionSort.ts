@@ -1,6 +1,6 @@
 import { AlgoIteration } from "."
 
-export function* InsertionSort(input: number[]): Generator<AlgoIteration, undefined, undefined> {
+export function* insertionSort(input: number[]): Generator<AlgoIteration, undefined, undefined> {
   let iteration = 0
   let prevInput = input.slice()
   let currInput = input.slice()

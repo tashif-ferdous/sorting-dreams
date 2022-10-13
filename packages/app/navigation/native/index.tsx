@@ -1,13 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
+import { DreamScreen } from '../../features/dream/screen'
 import { HomeScreen } from '../../features/home/screen'
-import { UserDetailScreen } from '../../features/user/detail-screen'
 
 const Stack = createNativeStackNavigator<{
   home: undefined
-  'user-detail': {
-    id: string
-  }
+  dream: undefined
 }>()
 
 export function NativeNavigation() {
@@ -20,11 +18,11 @@ export function NativeNavigation() {
           title: 'Home',
         }}
       />
-      <Stack.Screen
-        name="user-detail"
-        component={UserDetailScreen}
+       <Stack.Screen
+        name="dream"
+        component={DreamScreen}
         options={{
-          title: 'User',
+          title: 'Dream',
         }}
       />
     </Stack.Navigator>
