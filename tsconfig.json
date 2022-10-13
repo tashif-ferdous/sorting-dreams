@@ -3,7 +3,7 @@
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "app/*": ["./packages/app/*"]
+      "@sorting-dreams/app/*": ["./packages/@sorting-dreams/app/*"]
     },
     "jsx": "react-jsx"
   },

@@ -28,7 +28,7 @@ Most approaches to using Tailwind in React Native do something like this at runt
 const styles = props.className
   .split(' ')
   .map((className) => makeStyle(className))
-  
+
 return <View style={styles} />
 ```
 
@@ -44,7 +44,7 @@ Keep in mind that the Babel plugin will get used on iOS/Android only; on Web, we
 
 On Web, NativeWind uses Next.js' `PostCSS` feature to output CSS StyleSheets.
 
-Which means that **on Web, you're using CSS class names.** 
+Which means that **on Web, you're using CSS class names.**
 
 Yes, that's right. We aren't parsing className strings into objects for React Native Web to use. Instead, we're actually forwarding CSS classnames to the DOM. That means you can get responsive styles, dark mode support, & pseudo-selectors _with server-side rendering support_.
 
@@ -52,10 +52,9 @@ This is finally possible with the release of React Native Web 0.18.
 
 As a result, using NativeWind with React Native doesn't have significant overhead compared to plain old Tailwind CSS in a regular React app.
 
-If you're planning on making a website with Tailwind, why not use Solito with NativeWind? 
+If you're planning on making a website with Tailwind, why not use Solito with NativeWind?
 
 You might accidentally make a great native app when you thought you were just making a website.
-
 
 ### Bringing it together
 
@@ -64,7 +63,7 @@ Components are written using the `styled()` higher-order component.
 In your app's design system, you can start by building your own UI primitives:
 
 ```tsx
-// packages/app/design/typography
+// packages/@sorting-dreams/app/design/typography
 import { Text } from 'react-native'
 import { styled } from 'nativewind'
 
@@ -79,7 +78,7 @@ You can then use the `className` prop, just like regular Tailwind CSS:
 <P className="dark:text-white">Solito + NativeWind</P>
 ```
 
-Take a look at the [`packages/app/design`](https://github.com/nandorojo/solito/tree/master/example-monorepos/with-tailwind/packages/app/design) folder to see how components are created with ease.
+Take a look at the [`packages/@sorting-dreams/app/design`](https://github.com/nandorojo/solito/tree/master/example-monorepos/with-tailwind/packages/@sorting-dreams/app/design) folder to see how components are created with ease.
 
 > If you're reading the NativeWind docs, you might find that you can use `className` directly without using `styled`. Since this requires the Babel plugin for all platforms, it won't work with Solito. Be sure to always wrap your components with `styled`.
 
@@ -100,7 +99,7 @@ Take a look at the [`packages/app/design`](https://github.com/nandorojo/solito/t
   - `next`
 
 - `packages` shared packages across apps
-  - `app` you'll be importing most files from `app/`
+  - `app` you'll be importing most files from `@sorting-dreams/app/`
     - `features` (don't use a `screens` folder. organize by feature.)
     - `provider` (all the providers that wrap the app, and some no-ops for Web.)
     - `navigation` Next.js has a `pages/` folder. React Native doesn't. This folder contains navigation-related code for RN. You may use it for any navigation code, such as custom links.

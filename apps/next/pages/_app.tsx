@@ -11,7 +11,7 @@ const fixReanimatedIssue = () => {
 
 fixReanimatedIssue()
 
-import { Provider } from 'app/provider'
+import { Provider } from '@sorting-dreams/app/provider'
 import Head from 'next/head'
 import React from 'react'
 

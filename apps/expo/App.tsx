@@ -1,5 +1,5 @@
-import { NativeNavigation } from 'app/navigation/native'
-import { Provider } from 'app/provider'
+import { NativeNavigation } from '@sorting-dreams/app/navigation/native'
+import { Provider } from '@sorting-dreams/app/provider'
 
 export default function App() {
   return (

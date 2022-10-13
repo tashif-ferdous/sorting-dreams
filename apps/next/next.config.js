@@ -4,7 +4,7 @@ const withTM = require('next-transpile-modules')([
   'solito',
   'moti',
   'nativewind',
-  'app',
+  '@sorting-dreams/app',
 ])
 const withFonts = require('next-fonts')
 const withImages = require('next-images')

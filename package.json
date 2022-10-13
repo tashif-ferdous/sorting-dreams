@@ -1,5 +1,5 @@
 {
-  "name": "solito-with-tailwind",
+  "name": "sorting-dreams",
   "private": true,
   "workspaces": [
     "apps/*",
