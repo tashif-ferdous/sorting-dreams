@@ -1,7 +1,9 @@
-import { AlgoIteration } from "./types"
+import { AlgoAnimation, AlgoIteration } from "./types"
 
 
-function split(array: number[]): [number[], number[]] {
+function split(array: number[], startIdx: number, endIdx: number): [[number, number], [number, number]] {
+  const range = endIdx - startIdx
+  if (range 
   if (array.length == 0) return [[], []]
   if (array.length == 1) return [array, []]
 
@@ -9,23 +11,27 @@ function split(array: number[]): [number[], number[]] {
   return [array.slice(0, middle), array.slice(middle)]
 }
 
-export function mergeSort(input: number[]): number[] {
+export function mergeSort(input: number[], startIdx: number = 0, endIdx: number = input.length, animations: AlgoAnimation[] = []): [number[], AlgoAnimation[]] {
   // base case
-  if (input.length <= 1) {
-    return []
+  if (input.length <= 1 || (endIdx - startIdx) <= 1) {
+    return [[], []]
   }
   // recursive case
-  const [leftUnsorted, rightUnsorted] = split(input)
-  const left = mergeSort(leftUnsorted)
-  const right = mergeSort(rightUnsorted)
+  const [[leftStartIdx, leftEndIdx], [rightStartIdx, rightEndIdx]] = split(input, startIdx, endIdx)
+  const [left, leftAnimations] = mergeSort(input, leftStartIdx, leftEndIdx, animations)
+  const [right, rightAnimations] = mergeSort(input, rightStartIdx, rightEndIdx, animations)
 
   // merge step
   const result: number[] = []
-  let l = 0
-  let r = 0
-  while (l < left.length! || r < right.length!) {
+  let l = leftStartIdx
+  let r = rightStartIdx
+  while (l < leftEndIdx || r < rightEndIdx) {
     if (left[l]! < right[r]!) {
       result.push(left[l]!)
+      animations.push({
+        index: l,
+        value: left[l]
+      })
       l++
     } else {
       result.push(right[r]!)

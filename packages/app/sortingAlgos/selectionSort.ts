@@ -1,48 +1,54 @@
-import { AlgoIteration } from "./types"
+import { AlgoAnimation, AlgoIteration, Color } from "./types"
 
-export function* selectionSort(input: number[]): Generator<AlgoIteration, undefined, undefined> {
+export function selectionSort(input: number[]): [number[], AlgoAnimation[]] {
   // setup
-  let prevArray = input.slice()
-  let currArray = input.slice()
-  let currentIteration: AlgoIteration = {
-    prev: prevArray,
-    curr: currArray,
-    active: currArray[0]!
-  }
+  const array = input.slice()
+  const animations: AlgoAnimation[] = []
  
   // outer for loop
-  for (let outer=0; outer<input.length-1; outer++) {
-    let smallest = currArray[outer]
+  for (let outer=0; outer<array.length-1; outer++) {
+    let smallest = array[outer]
     let smallestIndex = outer
+    animations.push({
+      index: outer,
+      value: array[outer]!,
+      color: Color.ACTIVE
+    })
     // inner loop
-    for (let inner=outer+1; inner<input.length; inner++) {
+    for (let inner=outer+1; inner<array.length; inner++) {
+      animations.push({
+        index: inner,
+        value: array[inner]!,
+        color: Color.ACTIVE
+      })
       // find the smallest element
-      if (currArray[inner]! < smallest!) {
-        smallest = currArray[inner]
+      if (array[inner]! < smallest!) {
+        smallest = array[inner]
         smallestIndex = inner
       }
-
-      currentIteration = {
-        prev: prevArray,
-        curr: currArray,
-        active: currArray[inner]!
-      }
-      yield currentIteration
     }
     // swap the smallest element if needed
     if (smallestIndex != outer) {
-      prevArray = currArray
-      currArray = currArray.slice()
-      const temp = currArray[smallestIndex]
-      currArray[smallestIndex] = currArray[outer]!
-      currArray[outer] = temp!
+      const temp = array[smallestIndex]
+      array[smallestIndex] = array[outer]!
+      array[outer] = temp!
+
+      animations.push({
+        index: smallestIndex,
+        value: array[smallestIndex]!,
+        color: Color.ACTIVE
+      })
+      animations.push({
+        index: outer,
+        value: array[outer]!,
+        color: Color.ACTIVE 
+      })
     }
-    currentIteration = {
-      prev: prevArray,
-      curr: currArray,
-      active: currArray[outer]!
-    }
-    yield currentIteration
+    animations.push({
+      index: outer,
+      value: array[outer]!,
+      color: Color.DONE
+    })  
   }
-  return
+  return [array, animations]
 }

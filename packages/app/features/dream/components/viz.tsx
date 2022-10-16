@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../../design/view"
+import { Color } from "../../../sortingAlgos/types"
 import { Grid } from "./grid"
 
 export function Dream({input, algorithm, speedMilli}) : JSX.Element {
@@ -9,27 +10,51 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
   const [array, setArray] = useState(input? input: [])
   const [finished, setFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
-  const algoIter = useRef(algorithm(array))
+  const [animations, setAnimations] = useState([])
+  const [animationIdx, setAnimationIdx] = useState(0)
+  const [active, setActive] = useState(new Set<number>())
+  const [done, setDone] = useState(new Set<number>())
 
   useEffect(() => {
     setArray(input)
-    algoIter.current = algorithm(input)
+    setAnimations(algorithm(input)[1])
+    setAnimating(false)
+    setFinished(false)
+    setActive(new Set())
+    setDone(new Set())
+    setAnimationIdx(0)
   }, [input, algorithm])
 
   useEffect(() => {
     const id = setInterval(() => {
-      if (animating) {
+      if (animations && animating) {
         if (!finished) {
-          const {value, done} = algoIter.current.next()
-          if (done) {
+          // check if finished
+          if (animationIdx === animations.length) {
             console.log('done animating!')
             setFinished(true)
             setAnimating(false)
           } else {
-            console.log('next iteration of the algo:', value)
-            const {curr, index} = value
-            setArray(curr)
-          }        
+            const {index, value, color} = animations[animationIdx]!
+            setArray((currentArray) => {
+              const newArray = currentArray.slice()
+              newArray[index] = value
+              return newArray
+            })
+            if (color === Color.ACTIVE) {
+              setActive((currActive) => {
+                return new Set([index]) // only one elem is active
+              })
+
+            } else if (color == Color.DONE) {
+              setDone((currDone) => {
+                return new Set([...currDone, index])
+              })
+            }
+
+
+            setAnimationIdx((animationIdx) => animationIdx + 1)
+          }
         }    
       }
     }, speedMilli)
@@ -37,14 +62,14 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
     return () => {
       clearInterval(id)
     }
-  }, [array, finished, animating, speedMilli, algoIter])
+  }, [array, finished, animating, animations, animationIdx, speedMilli])
   
   const reset = (event) => {
     console.log('resetting', event)
     setArray(input.slice())
     setAnimating(false)
     setFinished(false)
-    algoIter.current = algorithm(input.slice())
+    setAnimations(algorithm(array)[1])
   }
 
   const animate = (event) => {
@@ -53,7 +78,7 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
   } 
 
   return (<View>
-    <Grid input={array} />
+    <Grid input={array} active={active} done={done} />
     <View className="flex flex-col justify-center items-center gap-4 pt-3">
       <Button title="Reset" onPress={(event) => reset(event)} disabled={!animating}/>
       <Button title="Start" onPress={(event) => animate(event)} disabled={animating || finished}/>
