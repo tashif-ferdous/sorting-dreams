@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../../design/view"
-import { selectionSort } from "../../../sortingAlgos/selectionSort"
 import { Grid } from "./grid"
 
 export function Dream({input, algorithm, speedMilli}) : JSX.Element {

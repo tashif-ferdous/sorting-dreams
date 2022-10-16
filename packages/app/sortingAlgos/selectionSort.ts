@@ -1,15 +1,13 @@
-import { AlgoIteration } from "."
+import { AlgoIteration } from "./types"
 
 export function* selectionSort(input: number[]): Generator<AlgoIteration, undefined, undefined> {
   // setup
-  let iteration = 0
   let prevArray = input.slice()
   let currArray = input.slice()
   let currentIteration: AlgoIteration = {
-    num: iteration,
     prev: prevArray,
     curr: currArray,
-    index: 0
+    active: currArray[0]!
   }
  
   // outer for loop
@@ -18,7 +16,6 @@ export function* selectionSort(input: number[]): Generator<AlgoIteration, undefi
     let smallestIndex = outer
     // inner loop
     for (let inner=outer+1; inner<input.length; inner++) {
-      iteration += 1
       // find the smallest element
       if (currArray[inner]! < smallest!) {
         smallest = currArray[inner]
@@ -26,10 +23,9 @@ export function* selectionSort(input: number[]): Generator<AlgoIteration, undefi
       }
 
       currentIteration = {
-        num: iteration,
         prev: prevArray,
         curr: currArray,
-        index: inner
+        active: currArray[inner]!
       }
       yield currentIteration
     }
@@ -42,10 +38,9 @@ export function* selectionSort(input: number[]): Generator<AlgoIteration, undefi
       currArray[outer] = temp!
     }
     currentIteration = {
-      num: iteration,
       prev: prevArray,
       curr: currArray,
-      index: outer
+      active: currArray[outer]!
     }
     yield currentIteration
   }
