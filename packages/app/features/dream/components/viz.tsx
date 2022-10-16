@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "react-native"
-import { Row } from "../../../design/layout"
 import { View } from "../../../design/view"
 import { selectionSort } from "../../../sortingAlgos/selectionSort"
 import { Grid } from "./grid"
 
-export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
-  const [array, setArray] = useState(input)
+export function Dream({input, algorithm, speedMilli}) : JSX.Element {
+  console.log('input:', input)
+
+  const [array, setArray] = useState(input? input: [])
   const [finished, setFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const algoIter = useRef(algorithm(array))
 
-  const algoIter = useRef(selectionSort(input.slice()))
+  useEffect(() => {
+    setArray(input)
+    algoIter.current = algorithm(input)
+  }, [input, algorithm])
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -33,14 +38,13 @@ export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
     return () => {
       clearInterval(id)
     }
-  }, [array, finished, animating, speedMilli, input, algoIter])
+  }, [array, finished, animating, speedMilli, algoIter])
   
   const reset = (event) => {
     console.log('resetting', event)
     setArray(input.slice())
     setAnimating(false)
     setFinished(false)
-    algoIter.current = null
     algoIter.current = algorithm(input.slice())
   }
 
