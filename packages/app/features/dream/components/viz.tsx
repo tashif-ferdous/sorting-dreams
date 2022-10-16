@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "react-native"
 import { Row } from "../../../design/layout"
+import { View } from "../../../design/view"
+import { selectionSort } from "../../../sortingAlgos/selectionSort"
 import { Grid } from "./grid"
 
 export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
@@ -8,7 +10,7 @@ export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
   const [finished, setFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
 
-  const algoIter = useRef(algorithm(array.slice()))
+  const algoIter = useRef(selectionSort(input.slice()))
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -21,8 +23,8 @@ export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
             setAnimating(false)
           } else {
             console.log('next iteration of the algo:', value)
-            const {next} = value
-            setArray(next)
+            const {curr, index} = value
+            setArray(curr)
           }        
         }    
       }
@@ -47,11 +49,11 @@ export function BasicArrayViz({input, algorithm, speedMilli}) : JSX.Element {
     setAnimating(true)
   } 
 
-  return (<>
+  return (<View>
     <Grid input={array} />
-    <Row className="flex flex-row justify-center items-center gap-4 pt-3">
+    <View className="flex flex-col justify-center items-center gap-4 pt-3">
       <Button title="Reset" onPress={(event) => reset(event)} disabled={!animating}/>
       <Button title="Start" onPress={(event) => animate(event)} disabled={animating || finished}/>
-    </Row>
-  </>)
+    </View>
+  </View>)
 }
