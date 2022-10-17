@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Button } from "react-native"
-import { Row } from "../../design/layout"
 import { View } from "../../design/view"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { Dream } from "./components/viz"

@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../../design/view"
-import { Color } from "../../../sortingAlgos/types"
-import { Grid } from "./array"
+import { AlgoAnimation, Color } from "../../../sortingAlgos/types"
 import { BarChart } from "./bar"
 
-export function Dream({input, algorithm, speedMilli}) : JSX.Element {
-  console.log('input:', input)
+export interface DreamProps {
+  input: number[]
+  algorithm: (input: number[]) => [number[], AlgoAnimation[]]
+  speedMilli: number
+}
 
+export function Dream({input, algorithm, speedMilli}: DreamProps) : JSX.Element {
   const [array, setArray] = useState(input? input: [])
   const [finished, setFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
-  const [animations, setAnimations] = useState([])
+  const algoAnimationEmpty: AlgoAnimation[] = []
+  const [animations, setAnimations] = useState(algoAnimationEmpty)
   const [animationIdx, setAnimationIdx] = useState(0)
   const [active, setActive] = useState(new Set<number>())
   const [done, setDone] = useState(new Set<number>())
@@ -49,7 +53,8 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
 
             } else if (color == Color.DONE) {
               setDone((currDone) => {
-                return new Set([...currDone, index])
+                currDone.add(index)
+                return currDone
               })
             }
 
@@ -65,7 +70,7 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
     }
   }, [array, finished, animating, animations, animationIdx, speedMilli])
   
-  const reset = (event) => {
+  const reset = (event: any) => {
     console.log('resetting', event)
     setArray(input.slice())
     setAnimating(false)
@@ -73,7 +78,7 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
     setAnimations(algorithm(array)[1])
   }
 
-  const animate = (event) => {
+  const animate = (event: any) => {
     console.log('animating', event)
     setAnimating(true)
   } 

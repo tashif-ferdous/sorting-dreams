@@ -15,7 +15,7 @@ export interface GridProps {
   done: Set<number>
 }
 
-function calculateHeight(input, max, maxHeightPercantage=75) {
+function calculateHeight(input: number, max:number, maxHeightPercantage=75) {
   const heightPercentage = Math.floor((input / max) * maxHeightPercantage)
   return heightPercentage
 }
@@ -40,8 +40,8 @@ export function Bar({value, max, active, done}: BarProps): JSX.Element {
 export function BarChart({input, active, done}: GridProps): JSX.Element {
   const max: number = Math.max(...input)
 
-  const isActive = (index) => active.has(index)
-  const isDone = (index) => done.has(index)
+  const isActive = (index: number) => active.has(index)
+  const isDone = (index: number) => done.has(index)
   return (<Row className="h-[75vh] flex-row content-evenly items-end">
       {input.map((item: number, index: number) => {
         return <Bar value={item} key={index} active={isActive(index)} done={isDone(index)} max={max} />

@@ -28,9 +28,9 @@ export function Cell({value, active, done, first}: CellProps): JSX.Element {
   </View>)
 }
 
-export function Grid({input, active, done}: GridProps): JSX.Element {
-  const isActive = (index) => active.has(index)
-  const isDone = (index) => done.has(index)
+export function Array({input, active, done}: GridProps): JSX.Element {
+  const isActive = (index: number) => active.has(index)
+  const isDone = (index: number) => done.has(index)
   return (<Row>
       {input.map((item: number, index: number) => {
         return <Cell value={item} key={index} active={isActive(index)} done={isDone(index)} first={index === 0}/>
