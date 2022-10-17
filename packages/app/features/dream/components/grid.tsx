@@ -17,11 +17,11 @@ export interface GridProps {
 
 export function Cell({value, active, done, first}: CellProps): JSX.Element {
   let className = (first)? "border-2": "border-b-2 border-t-2 border-r-2"
-  if (active) {
-    className = `${className} bg-green-500`
-  }
-  else if (done) {
+  if (done) {
     className = `${className} bg-indigo-500`
+  }
+  else if (active) {
+    className = `${className} bg-green-500`
   }
   return (<View className={`${className} p-2`}>
     <P>{value}</P>

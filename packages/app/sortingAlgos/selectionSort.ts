@@ -50,5 +50,10 @@ export function selectionSort(input: number[]): [number[], AlgoAnimation[]] {
       color: Color.DONE
     })  
   }
+  animations.push({
+    index: array.length-1,
+    value: array[array.length-1]!,
+    color: Color.DONE
+  })  
   return [array, animations]
 }
