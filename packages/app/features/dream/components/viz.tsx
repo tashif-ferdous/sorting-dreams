@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../../design/view"
 import { Color } from "../../../sortingAlgos/types"
-import { Grid } from "./grid"
+import { Grid } from "./array"
+import { BarChart } from "./bar"
 
 export function Dream({input, algorithm, speedMilli}) : JSX.Element {
   console.log('input:', input)
@@ -77,8 +78,8 @@ export function Dream({input, algorithm, speedMilli}) : JSX.Element {
     setAnimating(true)
   } 
 
-  return (<View>
-    <Grid input={array} active={active} done={done} />
+  return (<View className="h-full">
+    <BarChart input={array} active={active} done={done} />
     <View className="flex flex-col justify-center items-center gap-4 pt-3">
       <Button title="Reset" onPress={(event) => reset(event)} disabled={!animating}/>
       <Button title="Start" onPress={(event) => animate(event)} disabled={animating || finished}/>

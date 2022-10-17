@@ -34,7 +34,7 @@ export function DreamScreen() {
     setArray(newArray)
   }
 
-  return <View className="flex flex-row items-center justify-center">
+  return <View className="flex flex-row items-center justify-center h-full">
     <Dream input={array} algorithm={selectionSort} speedMilli={250}/>
     <Button onPress={() => createArray()} title="Generate new array"/>
   </View>
