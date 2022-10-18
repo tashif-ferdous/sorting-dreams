@@ -1,47 +1,89 @@
-import { AlgoAnimation, AlgoIteration } from "./types"
+import { resolveMotionValue } from "framer-motion"
+import { AlgoAnimation, Color } from "./types"
 
-
-function split(array: number[], startIdx: number, endIdx: number): [[number, number], [number, number]] {
+function split(startIdx: number, endIdx: number): [[number, number], [number, number]] {
   const range = endIdx - startIdx
-  if (range 
-  if (array.length == 0) return [[], []]
-  if (array.length == 1) return [array, []]
-
-  const middle = Math.floor(array.length / 2)
-  return [array.slice(0, middle), array.slice(middle)]
+  const middleIdx = Math.floor(range/2) + startIdx
+  if (range <= 1) return [[startIdx, endIdx], [endIdx, endIdx]]
+  return [[startIdx, middleIdx], [middleIdx+1, endIdx]]
 }
 
-export function mergeSort(input: number[], startIdx: number = 0, endIdx: number = input.length, animations: AlgoAnimation[] = []): [number[], AlgoAnimation[]] {
+export function mergeSort(input: number[], startIdx: number = 0, endIdx: number = input.length-1, animations: AlgoAnimation[] = []): [number[], AlgoAnimation[]] {
+  // the original call
+  const endMerge = (startIdx === 0 && endIdx === input.length - 1)
+
   // base case
-  if (input.length <= 1 || (endIdx - startIdx) <= 1) {
+  if ((endIdx - startIdx) < 1) {
     return [[], []]
   }
   // recursive case
-  const [[leftStartIdx, leftEndIdx], [rightStartIdx, rightEndIdx]] = split(input, startIdx, endIdx)
-  const [left, leftAnimations] = mergeSort(input, leftStartIdx, leftEndIdx, animations)
-  const [right, rightAnimations] = mergeSort(input, rightStartIdx, rightEndIdx, animations)
+  const [[leftStartIdx, leftEndIdx], [rightStartIdx, rightEndIdx]] = split(startIdx, endIdx)
+  console.log('splitting into:', 'left', leftStartIdx, leftEndIdx, 'right', rightStartIdx, rightEndIdx)
+  const [_left, leftAnimations] = mergeSort(input, leftStartIdx, leftEndIdx, animations)
+  const [_right, rightAnimations] = mergeSort(input, rightStartIdx, rightEndIdx, animations)
+  animations.concat(leftAnimations)
+  animations.concat(rightAnimations)
 
   // merge step
   const result: number[] = []
   let l = leftStartIdx
   let r = rightStartIdx
-  while (l < leftEndIdx || r < rightEndIdx) {
-    if (left[l]! < right[r]!) {
-      result.push(left[l]!)
+  while (l <= leftEndIdx && r <= rightEndIdx) {
+    if (input[l]! < input[r]!) {
+      result.push(input[l]!)
       animations.push({
         index: l,
-        value: left[l]
+        value: input[l]!,
+        color: Color.ACTIVE
       })
       l++
     } else {
-      result.push(right[r]!)
+      result.push(input[r]!)
+      animations.push({
+        index: r,
+        value: input[l]!,
+        color: Color.ACTIVE
+      })
       r++
     }
+    console.log('l', l, 'r', r)
   }
-  if (l < left.length) {
-    result.concat(left.splice(l))
-  } else if (r < right.length) {
-    result.concat(right.splice(r))
+  while (l <= leftEndIdx) {
+    result.push(input[l]!)
+    animations.push({
+      index: l,
+      value: input[l]!,
+      color: Color.ACTIVE
+    })
+    l++
+  } 
+  while (r <= rightEndIdx) {
+    result.push(input[r]!)
+    animations.push({
+      index: r,
+      value: input[r]!,
+      color: Color.ACTIVE
+    })
+    r++
   }
-  return result
+  // put the original array back into the section
+  const resultIter = result.entries()
+  for (let i=startIdx; i<=endIdx; i++) {
+    const [_idx, sortedValue] = resultIter.next().value
+    input[i] = sortedValue
+    animations.push({
+      index: i,
+      value: input[i]!,
+      color: Color.ACTIVE
+    })
+    if (endMerge) {
+      animations.push({
+        index: i,
+        value: input[i]!,
+        color: Color.DONE
+      }) 
+    }
+  }
+
+  return [result, animations]
 }

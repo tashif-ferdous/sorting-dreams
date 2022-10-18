@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../design/view"
+import { mergeSort } from "../../sortingAlgos/mergeSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { Dream } from "./components/viz"
 
@@ -34,7 +35,7 @@ export function DreamScreen() {
   }
 
   return <View className="flex flex-row items-center justify-center h-full">
-    <Dream input={array} algorithm={selectionSort} speedMilli={250}/>
+    <Dream input={array} algorithm={mergeSort} speedMilli={250}/>
     <Button onPress={() => createArray()} title="Generate new array"/>
   </View>
 }
