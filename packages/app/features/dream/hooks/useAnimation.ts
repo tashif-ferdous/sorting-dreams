@@ -15,6 +15,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   const [initSortedInput, initAlgoOutput]: [number[], AnimationElem[]] = algorithm(array)
   const [_sortedInput, setSortedInput] = useState(initSortedInput)
   const [algoOutput, setAlgoOutput] = useState(initAlgoOutput)
+  const [paintDone, setPaintDone] = useState(new Set<number>)
 
   const [prevActiveElem, setPrevActiveElem] = useState<AnimationElem | undefined>(undefined)
 
@@ -33,6 +34,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
     console.log('reset(): input=',input)
     setAnimating(false)
     setCurrAnimationIdx(0)
+    setPaintDone(new Set<number>())
     if (input) {
       setAnimation(generateStartingAnimation(input))
       const [sortedInput, algoOutput] = algorithm(input)
@@ -56,7 +58,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   useEffect(() => {
     const id = setInterval(() => {
       // have we reached the end?
-      if (currAnimationIdx === array.length - 1) {
+      if (currAnimationIdx === algoOutput.length) {
         setAnimating(false)
         return
       }
@@ -74,7 +76,8 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
 
         if (prevActiveElem && next.color === Color.ACTIVE) { // can only have 1 active element
           console.log('debug', 'nextAnimations', nextAnimations, 'prevActiveElem', prevActiveElem)
-          nextAnimations[prevActiveElem!.index]!.color = Color.NEUTRAL // reset to neutral
+          const priorColor = paintDone.has(prevActiveElem.index) ? Color.DONE : Color.NEUTRAL
+          nextAnimations[prevActiveElem!.index]!.color = priorColor // reset to neutral
         }
         nextAnimations[next.index] = {
           index: next.index,
@@ -83,6 +86,12 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
         }
         return nextAnimations
       })
+      if (next.color === Color.DONE) {
+        setPaintDone((set) => {
+          set.add(next.index)
+          return set
+        })
+      }
       if (prevActiveElem === undefined || algoOutput[currAnimationIdx]?.color === Color.ACTIVE) {
         setPrevActiveElem(algoOutput[currAnimationIdx])
       }

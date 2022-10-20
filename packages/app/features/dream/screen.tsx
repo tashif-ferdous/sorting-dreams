@@ -30,7 +30,7 @@ export function DreamScreen() {
   const [animations, animating, reset, start, pause] = useAnimation({
     array: array, 
     algorithm: selectionSort, 
-    speedMillis: 250
+    speedMillis: 10
   })
 
   const createArray = () => {
