@@ -5,11 +5,12 @@ export interface AlgoIteration {
 }
 
 export enum Color {
+  NEUTRAL = 0,
   DONE = 1,
   ACTIVE = 2
 }
 
-export interface AlgoAnimation {
+export interface AnimationElem {
   index: number,
   value: number,
   color: Color,

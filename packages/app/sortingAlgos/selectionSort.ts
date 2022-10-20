@@ -1,9 +1,9 @@
-import { AlgoAnimation, AlgoIteration, Color } from "./types"
+import { AnimationElem, AlgoIteration, Color } from "./types"
 
-export function selectionSort(input: number[]): [number[], AlgoAnimation[]] {
+export function selectionSort(input: number[]): [number[], AnimationElem[]] {
   // setup
   const array = input.slice()
-  const animations: AlgoAnimation[] = []
+  const animations: AnimationElem[] = []
  
   // outer for loop
   for (let outer=0; outer<array.length-1; outer++) {

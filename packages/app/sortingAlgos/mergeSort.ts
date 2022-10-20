@@ -1,5 +1,5 @@
 import { resolveMotionValue } from "framer-motion"
-import { AlgoAnimation, Color } from "./types"
+import { AnimationElem, Color } from "./types"
 
 function split(startIdx: number, endIdx: number): [[number, number], [number, number]] {
   const range = endIdx - startIdx
@@ -8,7 +8,7 @@ function split(startIdx: number, endIdx: number): [[number, number], [number, nu
   return [[startIdx, middleIdx], [middleIdx+1, endIdx]]
 }
 
-export function mergeSort(input: number[], startIdx: number = 0, endIdx: number = input.length-1, animations: AlgoAnimation[] = []): [number[], AlgoAnimation[]] {
+export function mergeSort(input: number[], startIdx: number = 0, endIdx: number = input.length-1, animations: AnimationElem[] = []): [number[], AnimationElem[]] {
   // the original call
   const endMerge = (startIdx === 0 && endIdx === input.length - 1)
 

@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { Button } from "react-native"
 import { View } from "../../design/view"
-import { mergeSort } from "../../sortingAlgos/mergeSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
-import { Dream } from "./components/viz"
+import { BarChart } from "./components/bar"
+import { Nav, NavProps } from "./components/nav"
+import { useAnimation } from "./hooks/useAnimation"
 
 // https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
 function randomIntFromInterval(min: number, max: number): number { // min and max included 
@@ -27,15 +27,33 @@ function generateArray(size=10, scale=2): number[] {
 export function DreamScreen() {
   const input = [10, 8, 4, 7, 3, 2, 6, 1, 5, 9]
   const [array, setArray] = useState(input) 
+  const [animations, animating, reset, start, pause] = useAnimation({
+    array: array, 
+    algorithm: selectionSort, 
+    speedMillis: 250
+  })
 
   const createArray = () => {
-    const newArray = generateArray(10)
+    const newArray = generateArray(100)
     console.log('new array = ', newArray)
     setArray(newArray)
+    reset(array)
   }
 
   return <View className="flex flex-row items-center justify-center h-full">
-    <Dream input={array} algorithm={mergeSort} speedMilli={250}/>
-    <Button onPress={() => createArray()} title="Generate new array"/>
+    <View>
+      <BarChart input={animations}/> 
+    </View>
+    <View>
+      <Nav 
+        onGenerateArrayPressed={createArray} 
+        onPlayPressed={start}
+        playPressable={!animating}
+        onPausePressed={pause}
+        pausePressable={animating}
+        onResetPressed={reset}
+      />
+    </View>
+    
   </View>
 }

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { Button } from "react-native"
 import { View } from "../../../design/view"
-import { AlgoAnimation, Color } from "../../../sortingAlgos/types"
-import { BarChart } from "./bar"
+import { AnimationElem, Color } from "../../../sortingAlgos/types"
+import { BarChartOld } from "./bar"
 
 export interface DreamProps {
   input: number[]
-  algorithm: (input: number[]) => [number[], AlgoAnimation[]]
+  algorithm: (input: number[]) => [number[], AnimationElem[]]
   speedMilli: number
 }
 
@@ -14,7 +14,7 @@ export function Dream({input, algorithm, speedMilli}: DreamProps) : JSX.Element 
   const [array, setArray] = useState(input? input: [])
   const [finished, setFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
-  const algoAnimationEmpty: AlgoAnimation[] = []
+  const algoAnimationEmpty: AnimationElem[] = []
   const [animations, setAnimations] = useState(algoAnimationEmpty)
   const [animationIdx, setAnimationIdx] = useState(0)
   const [active, setActive] = useState(new Set<number>())
@@ -84,7 +84,7 @@ export function Dream({input, algorithm, speedMilli}: DreamProps) : JSX.Element 
   } 
 
   return (<View className="h-full">
-    <BarChart input={array} active={active} done={done} />
+    <BarChartOld input={array} active={active} done={done} />
     <View className="flex flex-col justify-center items-center gap-4 pt-3">
       <Button title="Reset" onPress={(event) => reset(event)} disabled={!animating}/>
       <Button title="Start" onPress={(event) => animate(event)} disabled={animating || finished}/>
