@@ -37,10 +37,10 @@ export function DreamScreen() {
     const newArray = generateArray(100)
     console.log('new array = ', newArray)
     setArray(newArray)
-    reset(array)
+    reset(newArray)
   }
 
-  return <View className="flex flex-row items-center justify-center h-full">
+  return <View className="flex flex-col items-center h-full justify-around">
     <View>
       <BarChart input={animations}/> 
     </View>
@@ -51,7 +51,7 @@ export function DreamScreen() {
         playPressable={!animating}
         onPausePressed={pause}
         pausePressable={animating}
-        onResetPressed={reset}
+        onResetPressed={() => reset()}
       />
     </View>
     

@@ -19,7 +19,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   const [prevActiveElem, setPrevActiveElem] = useState<AnimationElem | undefined>(undefined)
 
   const generateStartingAnimation = (input: number[]): AnimationElem[] => {
-    return array.map((item: number, index: number) => {
+    return input.map((item: number, index: number) => {
       return {
         index: index,
         value: item,
@@ -29,13 +29,19 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   }
   const [animations, setAnimation] = useState(generateStartingAnimation(array))
 
-  const reset = (array: number[]): void => {
+  const reset = (input?: number[]): void => {
+    console.log('reset(): input=',input)
     setAnimating(false)
     setCurrAnimationIdx(0)
-    setAnimation(generateStartingAnimation(array))
-    const [sortedInput, algoOutput] = algorithm(array)
-    setSortedInput(sortedInput)
-    setAlgoOutput(algoOutput)
+    if (input) {
+      setAnimation(generateStartingAnimation(input))
+      const [sortedInput, algoOutput] = algorithm(input)
+      setSortedInput(sortedInput)
+      setAlgoOutput(algoOutput)
+    } else {
+      setAnimation(generateStartingAnimation(array))
+    }
+    setCurrAnimationIdx(0)
   }
 
   const start = (): void => {
@@ -61,23 +67,23 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
       }
 
       // animate the next change
-      const {index, value, color}: AnimationElem = algoOutput[currAnimationIdx]!
+      const next: AnimationElem = algoOutput[currAnimationIdx]!
+      console.log('applying change:', next)
       setAnimation((animations) => {
-        console.log('animating...', animations)
         const nextAnimations = animations.slice()
 
-        if (prevActiveElem && color === Color.ACTIVE) { // can only have 1 active element
+        if (prevActiveElem && next.color === Color.ACTIVE) { // can only have 1 active element
           console.log('debug', 'nextAnimations', nextAnimations, 'prevActiveElem', prevActiveElem)
           nextAnimations[prevActiveElem!.index]!.color = Color.NEUTRAL // reset to neutral
         }
-        nextAnimations[index] = {
-          index: index,
-          value: value,
-          color: color
+        nextAnimations[next.index] = {
+          index: next.index,
+          value: next.value,
+          color: next.color
         }
         return nextAnimations
       })
-      if (prevActiveElem === null) {
+      if (prevActiveElem === undefined || algoOutput[currAnimationIdx]?.color === Color.ACTIVE) {
         setPrevActiveElem(algoOutput[currAnimationIdx])
       }
       setCurrAnimationIdx((idx) => idx+1)
