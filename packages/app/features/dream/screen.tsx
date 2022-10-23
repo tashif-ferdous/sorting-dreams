@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { View } from "../../design/view"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
+import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
 import { Nav, NavProps } from "./components/nav"
 import { useAnimation } from "./hooks/useAnimation"
@@ -40,11 +41,22 @@ export function DreamScreen() {
     reset(newArray)
   }
 
+  const algos: AlgoDisplay[] = [
+    {
+      name: 'Selection Sort',
+      algorithm: selectionSort,
+      selected: true
+    }
+  ]
+
   return <View className="flex flex-col items-center h-full justify-around">
-    <View>
+    <View className="h-[10%] align-center justify-start">
+      <AlgoHeader algos={algos}/>
+    </View>
+    <View className="h-[75%] pb-5">
       <BarChart input={animations}/> 
     </View>
-    <View>
+    <View className="h-[15%]">
       <Nav 
         onGenerateArrayPressed={createArray} 
         onPlayPressed={start}

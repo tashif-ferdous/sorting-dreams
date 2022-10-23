@@ -1,5 +1,4 @@
 import { Row } from "../../../design/layout"
-import { P } from "../../../design/typography"
 import { View } from "../../../design/view"
 import { AnimationElem, Color } from "../../../sortingAlgos/types"
 
@@ -16,7 +15,7 @@ export interface GridProps {
   done: Set<number>
 }
 
-function calculateHeight(input: number, max:number, maxHeightPercantage=75) {
+function calculateHeight(input: number, max:number, maxHeightPercantage=95) {
   const heightPercentage = Math.floor((input / max) * maxHeightPercantage)
   return heightPercentage
 }
@@ -38,25 +37,13 @@ export function Bar({value, max, active, done}: BarProps): JSX.Element {
   </View>)
 }
 
-export function BarChartOld({input, active, done}: GridProps): JSX.Element {
-  const max: number = Math.max(...input)
-
-  const isActive = (index: number) => active.has(index)
-  const isDone = (index: number) => done.has(index)
-  return (<Row className="h-[75vh] flex-row content-evenly items-end">
-      {input.map((item: number, index: number) => {
-        return <Bar value={item} key={index} active={isActive(index)} done={isDone(index)} max={max} />
-      })}
-    </Row>)
-}
-
 export interface BarChartProps {
   input: AnimationElem[]
 }
 export function BarChart({input}: BarChartProps) {
   const max: number = Math.max(...input.map(elem => elem.value))
   return (
-    <Row className="h-[75vh] flex-row content-evenly items-end">
+    <Row className="h-full flex-row content-evenly items-end">
       {input.map((elem: AnimationElem, index: number) => {
         return <Bar value={elem.value} key={index} active={elem.color === Color.ACTIVE} done={elem.color === Color.DONE} max={max} />
       })}
