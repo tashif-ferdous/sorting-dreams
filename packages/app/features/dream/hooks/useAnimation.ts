@@ -4,7 +4,11 @@ import { AnimationElem, Color } from '../../../sortingAlgos/types'
 export interface useAnimationProps {
   array: number[],
   algorithm: (array: number[]) => [number[], AnimationElem[]]
-  speedMillis: number,
+  speedMillis?: number | undefined,
+}
+
+function calculateAnimationSpeedMillis(numElems, scale=10, targetMillis=5000) {
+  return (targetMillis / (numElems * scale))
 }
 
 export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, (array?: number[]) => void, () => void, () => void] {
@@ -18,6 +22,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   const [paintDone, setPaintDone] = useState(new Set<number>)
 
   const [prevActiveElem, setPrevActiveElem] = useState<AnimationElem | undefined>(undefined)
+  const animationSpeedMillis = speedMillis? speedMillis: calculateAnimationSpeedMillis(array.length)
 
   const generateStartingAnimation = (input: number[]): AnimationElem[] => {
     return input.map((item: number, index: number) => {
@@ -97,12 +102,12 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
       }
       setCurrAnimationIdx((idx) => idx+1)
       
-    }, speedMillis)
+    }, animationSpeedMillis)
 
     return () => {
       clearInterval(id)
     }
-  }, [algoOutput, animating, array.length, currAnimationIdx, prevActiveElem, speedMillis])
+  }, [algoOutput, animating, array.length, currAnimationIdx, prevActiveElem, paintDone, animationSpeedMillis])
 
   return [animations, animating, reset, start, pause]
 }

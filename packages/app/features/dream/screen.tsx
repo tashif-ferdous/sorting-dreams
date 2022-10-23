@@ -30,8 +30,7 @@ export function DreamScreen() {
   const [array, setArray] = useState(input) 
   const [animations, animating, reset, start, pause] = useAnimation({
     array: array, 
-    algorithm: selectionSort, 
-    speedMillis: 10
+    algorithm: selectionSort
   })
 
   const createArray = () => {
@@ -53,7 +52,7 @@ export function DreamScreen() {
     <View className="h-[10%] align-center justify-start">
       <AlgoHeader algos={algos}/>
     </View>
-    <View className="h-[75%] pb-5">
+    <View className="h-[75%] w-screen items-center pb-5">
       <BarChart input={animations}/> 
     </View>
     <View className="h-[15%]">

@@ -7,6 +7,7 @@ export interface BarProps {
   active: boolean
   done: boolean
   max: number
+  numBars: number
 }
 
 export interface GridProps {
@@ -20,7 +21,12 @@ function calculateHeight(input: number, max:number, maxHeightPercantage=95) {
   return heightPercentage
 }
 
-export function Bar({value, max, active, done}: BarProps): JSX.Element {
+function calculateWidth(input: number, numBars: number, maxWidthPercentage=95) {
+  const widthPercentage = ((input / numBars) * maxWidthPercentage)
+  return widthPercentage
+}
+
+export function Bar({value, max, numBars, active, done}: BarProps): JSX.Element {
   let className = `border-1`
   if (done) {
     className = `${className} bg-indigo-500`
@@ -30,10 +36,11 @@ export function Bar({value, max, active, done}: BarProps): JSX.Element {
   } else {
     className = `${className} bg-orange-500`
   }
-  const heightStyle = {
-    height: `${calculateHeight(value, max)}%`
+  const heightAndWidth = {
+    height: `${calculateHeight(value, max)}%`,
+    width: `${calculateWidth(1, numBars)}%`
   }
-  return (<View className={`${className} p-1 w-2`} style={heightStyle}>
+  return (<View className={`${className} p-1`} style={heightAndWidth}>
   </View>)
 }
 
@@ -43,9 +50,9 @@ export interface BarChartProps {
 export function BarChart({input}: BarChartProps) {
   const max: number = Math.max(...input.map(elem => elem.value))
   return (
-    <Row className="h-full flex-row content-evenly items-end">
+    <Row className="h-full w-full content-evenly items-end justify-center">
       {input.map((elem: AnimationElem, index: number) => {
-        return <Bar value={elem.value} key={index} active={elem.color === Color.ACTIVE} done={elem.color === Color.DONE} max={max} />
+        return <Bar value={elem.value} key={index} active={elem.color === Color.ACTIVE} done={elem.color === Color.DONE} max={max} numBars={input.length}/>
       })}
     </Row>) 
 }
