@@ -7,7 +7,7 @@ export interface useAnimationProps {
   speedMillis?: number | undefined,
 }
 
-function calculateAnimationSpeedMillis(numElems, scale=10, targetMillis=5000) {
+function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=5000) {
   return (targetMillis / (numElems * scale))
 }
 
