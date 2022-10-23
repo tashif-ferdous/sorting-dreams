@@ -75,12 +75,10 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
 
       // animate the next change
       const next: AnimationElem = algoOutput[currAnimationIdx]!
-      console.log('applying change:', next)
       setAnimation((animations) => {
         const nextAnimations = animations.slice()
 
         if (prevActiveElem && next.color === Color.ACTIVE) { // can only have 1 active element
-          console.log('debug', 'nextAnimations', nextAnimations, 'prevActiveElem', prevActiveElem)
           const priorColor = paintDone.has(prevActiveElem.index) ? Color.DONE : Color.NEUTRAL
           nextAnimations[prevActiveElem!.index]!.color = priorColor // reset to neutral
         }

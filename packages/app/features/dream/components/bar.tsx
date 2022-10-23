@@ -1,6 +1,8 @@
 import { Row } from "../../../design/layout"
-import { View } from "../../../design/view"
+import { AnimatedView, View } from "../../../design/view"
+import { MotiView } from "moti"
 import { AnimationElem, Color } from "../../../sortingAlgos/types"
+import { StyleSheet } from "react-native"
 
 export interface BarProps {
   value: number
@@ -27,21 +29,25 @@ function calculateWidth(input: number, numBars: number, maxWidthPercentage=95) {
 }
 
 export function Bar({value, max, numBars, active, done}: BarProps): JSX.Element {
-  let className = `border-1`
-  if (done) {
-    className = `${className} bg-indigo-500`
-  }
-  else if (active) {
-    className = `${className} bg-green-500`
-  } else {
-    className = `${className} bg-orange-500`
-  }
-  const heightAndWidth = {
-    height: `${calculateHeight(value, max)}%`,
-    width: `${calculateWidth(1, numBars)}%`
-  }
-  return (<View className={`${className} p-1`} style={heightAndWidth}>
-  </View>)
+  const color = done? 'green': active? 'blue': 'red'
+  const styles = StyleSheet.create({
+    bar: {
+      backgroundColor: color,
+      height: `${calculateHeight(value, max)}%`,
+      width: `${calculateWidth(1, numBars)}%`,
+      borderTopLeftRadius: 2,
+      borderTopRightRadius: 2,
+      borderWidth: 1,
+      borderColor: active? 'black': 'white'
+    }
+  })
+
+  return (
+    <AnimatedView style={styles.bar} animate={{
+      height: styles.bar.height,
+      backgroundColor: styles.bar.backgroundColor,
+    }}/>
+  )
 }
 
 export interface BarChartProps {
