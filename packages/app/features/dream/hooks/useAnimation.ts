@@ -8,7 +8,7 @@ export interface useAnimationProps {
 }
 
 function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=5000) {
-  return (targetMillis / (numElems * scale))
+  return Math.max((targetMillis / (numElems * scale)), 5)
 }
 
 export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, (array?: number[]) => void, () => void, () => void] {

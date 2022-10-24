@@ -3,6 +3,7 @@ import { AnimatedView, View } from "../../../design/view"
 import { MotiView } from "moti"
 import { AnimationElem, Color } from "../../../sortingAlgos/types"
 import { StyleSheet } from "react-native"
+import { useMemo } from "react"
 
 export interface BarProps {
   value: number
@@ -18,29 +19,30 @@ export interface GridProps {
   done: Set<number>
 }
 
-function calculateHeight(input: number, max:number, maxHeightPercantage=95) {
+function calculateHeight(input: number, max:number, maxHeightPercantage=95): number {
   const heightPercentage = Math.floor((input / max) * maxHeightPercantage)
   return heightPercentage
 }
 
-function calculateWidth(input: number, numBars: number, maxWidthPercentage=95) {
+function calculateWidth(input: number, numBars: number, maxWidthPercentage=95): number {
   const widthPercentage = ((input / numBars) * maxWidthPercentage)
   return widthPercentage
 }
 
 export function Bar({value, max, numBars, active, done}: BarProps): JSX.Element {
-  const color = done? 'green': active? 'blue': 'red'
-  const styles = StyleSheet.create({
+  const styles = useMemo(() => {
+    const color = done? 'green': 'red'
+    return StyleSheet.create({
     bar: {
       backgroundColor: color,
       height: `${calculateHeight(value, max)}%`,
-      width: `${calculateWidth(1, numBars)}%`,
-      borderTopLeftRadius: 2,
-      borderTopRightRadius: 2,
+      width: `${calculateWidth(1, numBars).toFixed(2)}%`,
+      borderTopLeftRadius: 3,
+      borderTopRightRadius: 3,
       borderWidth: 1,
       borderColor: active? 'black': 'white'
     }
-  })
+  })}, [value, max, numBars, active, done])
 
   return (
     <AnimatedView style={styles.bar} animate={{

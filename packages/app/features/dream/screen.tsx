@@ -3,7 +3,7 @@ import { View } from "../../design/view"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
-import { Nav, NavProps } from "./components/nav"
+import { Player, NavProps } from "./components/player"
 import { useAnimation } from "./hooks/useAnimation"
 
 // https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
@@ -56,7 +56,7 @@ export function DreamScreen() {
       <BarChart input={animations}/> 
     </View>
     <View className="h-[15%]">
-      <Nav 
+      <Player 
         onGenerateArrayPressed={createArray} 
         onPlayPressed={start}
         playPressable={!animating}
