@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { View } from "../../design/view"
 import { mergeSort } from "../../sortingAlgos/mergeSort"
+import { quickSort } from "../../sortingAlgos/quickSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
@@ -26,12 +27,32 @@ function generateArray(size=10, scale=2): number[] {
   return array
 }
 
+const algos: AlgoDisplay[] = [
+  {
+    name: 'Selection Sort',
+    algorithm: selectionSort,
+    description: 'Find the smallest number, one at a time'
+  },
+  {
+    name: 'Merge Sort',
+    algorithm: mergeSort,
+    description: 'Divide and conquer, and then merge the smaller sorted arrays up.'
+  },
+  {
+    name: 'Quick Sort',
+    algorithm: quickSort,
+    description: 'Divide and conquer, by finding a random pivot to order around.'
+  }
+]
+
+const algoDisplayIdx = 2
+
 export function DreamScreen() {
   const input = [10, 8, 4, 7, 3, 2, 6, 1, 5, 9]
   const [array, setArray] = useState(input) 
   const [animations, animating, done, resetArray, resetAlgo, start, pause] = useAnimation({
     array: array, 
-    algorithm: mergeSort
+    algorithm: algos[algoDisplayIdx]!.algorithm 
   })
 
   const createArray = () => {
@@ -41,22 +62,9 @@ export function DreamScreen() {
     resetArray(newArray)
   }
 
-  const algos: AlgoDisplay[] = [
-    {
-      name: 'Selection Sort',
-      algorithm: selectionSort,
-      description: 'Find the smallest number, one at a time'
-    },
-    {
-      name: 'Merge Sort',
-      algorithm: mergeSort,
-      description: 'Divide and conquer, and then merge the smaller sorted arrays up.'
-    }
-  ]
-
   return <View className="flex flex-col items-center h-full justify-around">
     <View className="h-[10%] align-center justify-start">
-      <AlgoHeader algos={algos} initialSelectedIdx={1} onAlgoChange={(algo) => {resetAlgo(algo)}}/>
+      <AlgoHeader algos={algos} initialSelectedIdx={algoDisplayIdx} onAlgoChange={(algo) => {resetAlgo(algo)}}/>
     </View>
     <View className="h-[75%] w-screen items-center pb-5">
       <BarChart input={animations}/> 
