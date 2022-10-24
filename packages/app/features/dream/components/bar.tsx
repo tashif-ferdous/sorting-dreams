@@ -20,7 +20,7 @@ export interface GridProps {
 }
 
 function calculateHeight(input: number, max:number, maxHeightPercantage=95): number {
-  const heightPercentage = Math.floor((input / max) * maxHeightPercantage)
+  const heightPercentage = ((input / max) * maxHeightPercantage)
   return heightPercentage
 }
 
@@ -35,7 +35,7 @@ export function Bar({value, max, numBars, active, done}: BarProps): JSX.Element 
     return StyleSheet.create({
     bar: {
       backgroundColor: color,
-      height: `${calculateHeight(value, max)}%`,
+      height: `${calculateHeight(value, max).toFixed(2)}%`,
       width: `${calculateWidth(1, numBars).toFixed(2)}%`,
       borderTopLeftRadius: 3,
       borderTopRightRadius: 3,

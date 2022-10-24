@@ -29,7 +29,7 @@ function generateArray(size=10, scale=2): number[] {
 export function DreamScreen() {
   const input = [10, 8, 4, 7, 3, 2, 6, 1, 5, 9]
   const [array, setArray] = useState(input) 
-  const [animations, animating, done, reset, start, pause] = useAnimation({
+  const [animations, animating, done, resetArray, resetAlgo, start, pause] = useAnimation({
     array: array, 
     algorithm: mergeSort
   })
@@ -38,25 +38,25 @@ export function DreamScreen() {
     const newArray = generateArray(100)
     console.log('new array = ', newArray)
     setArray(newArray)
-    reset(newArray)
+    resetArray(newArray)
   }
 
   const algos: AlgoDisplay[] = [
     {
       name: 'Selection Sort',
       algorithm: selectionSort,
-      selected: false
+      description: 'Find the smallest number, one at a time'
     },
     {
       name: 'Merge Sort',
       algorithm: mergeSort,
-      selected: true
+      description: 'Divide and conquer, and then merge the smaller sorted arrays up.'
     }
   ]
 
   return <View className="flex flex-col items-center h-full justify-around">
     <View className="h-[10%] align-center justify-start">
-      <AlgoHeader algos={algos}/>
+      <AlgoHeader algos={algos} initialSelectedIdx={1} onAlgoChange={(algo) => {resetAlgo(algo)}}/>
     </View>
     <View className="h-[75%] w-screen items-center pb-5">
       <BarChart input={animations}/> 
@@ -69,7 +69,7 @@ export function DreamScreen() {
         playShowable={!animating}
         onPausePressed={pause}
         pausePressable={animating}
-        onResetPressed={() => reset()}
+        onResetPressed={() => resetArray()}
       />
     </View>
     

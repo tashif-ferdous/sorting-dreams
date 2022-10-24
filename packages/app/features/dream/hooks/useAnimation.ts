@@ -8,10 +8,10 @@ export interface useAnimationProps {
 }
 
 function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=5000) {
-  return Math.max((targetMillis / (numElems * scale)), 20)
+  return Math.max((targetMillis / (numElems * scale)), 40)
 }
 
-export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, boolean, (array?: number[]) => void, () => void, () => void] {
+export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, boolean, (array?: number[]) => void, (algo: (input: number[]) => [number[], AnimationElem[]]) => void,() => void, () => void] {
   const [animating, setAnimating] = useState(false)
   const [currAnimationIdx, setCurrAnimationIdx] = useState(0)
 
@@ -36,7 +36,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   }
   const [animations, setAnimation] = useState(generateStartingAnimation(array))
 
-  const reset = (input?: number[]): void => {
+  const resetArray = (input?: number[]): void => {
     setAnimating(false)
     setDone(false)
     setCurrAnimationIdx(0)
@@ -49,7 +49,18 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
     } else {
       setAnimation(generateStartingAnimation(array))
     }
+  }
+
+  const resetAlgo = (algo: (input: number[]) => [number[], AnimationElem[]]): void => {
+    setAnimating(false)
+    setDone(false)
     setCurrAnimationIdx(0)
+    setPaintDone(new Set<number>)
+
+    const [sorted, animationsOutput]: [number[], AnimationElem[]] = algo(array)
+    setAlgoOutput(animationsOutput)
+    setSortedInput(sorted)
+    setAnimation(generateStartingAnimation(array))
   }
 
   const start = (): void => {
@@ -109,5 +120,5 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
     }
   }, [algoOutput, animating, array.length, currAnimationIdx, prevActiveElem, paintDone, animationSpeedMillis])
 
-  return [animations, animating, done, reset, start, pause]
+  return [animations, animating, done, resetArray, resetAlgo, start, pause]
 }
