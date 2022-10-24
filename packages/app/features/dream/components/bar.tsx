@@ -47,7 +47,7 @@ export function Bar({value, max, numBars, active, done}: BarProps): JSX.Element 
   return (
     <AnimatedView style={styles.bar} animate={{
       height: styles.bar.height,
-      backgroundColor: styles.bar.backgroundColor,
+      // backgroundColor: styles.bar.backgroundColor,
     }}/>
   )
 }

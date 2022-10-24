@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { View } from "../../design/view"
+import { mergeSort } from "../../sortingAlgos/mergeSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
@@ -30,7 +31,7 @@ export function DreamScreen() {
   const [array, setArray] = useState(input) 
   const [animations, animating, reset, start, pause] = useAnimation({
     array: array, 
-    algorithm: selectionSort
+    algorithm: mergeSort
   })
 
   const createArray = () => {
@@ -44,6 +45,11 @@ export function DreamScreen() {
     {
       name: 'Selection Sort',
       algorithm: selectionSort,
+      selected: false
+    },
+    {
+      name: 'Merge Sort',
+      algorithm: mergeSort,
       selected: true
     }
   ]
