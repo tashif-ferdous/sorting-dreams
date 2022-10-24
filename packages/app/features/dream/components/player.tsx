@@ -9,6 +9,7 @@ export interface NavProps {
   onGenerateArrayPressed: () => void,
   onPlayPressed: () => void,
   playPressable: boolean,
+  playShowable: boolean,
   onPausePressed: () => void,
   pausePressable: boolean,
   onResetPressed: () => void,
@@ -18,6 +19,7 @@ export function Player({
   onGenerateArrayPressed, 
   onPlayPressed, 
   playPressable, 
+  playShowable,
   onPausePressed, 
   pausePressable,
   onResetPressed,
@@ -26,8 +28,9 @@ export function Player({
     <Pressable onPress={onGenerateArrayPressed} className='p-2'>
       <Plus />
     </Pressable>
-    {playPressable && (<Pressable className='p-2'
+    {playShowable && (<Pressable className='p-2'
       onPress={onPlayPressed}
+      disabled={!playPressable}
     >
       <Play />
     </Pressable>)}

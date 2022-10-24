@@ -11,7 +11,7 @@ function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=
   return Math.max((targetMillis / (numElems * scale)), 20)
 }
 
-export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, (array?: number[]) => void, () => void, () => void] {
+export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, boolean, (array?: number[]) => void, () => void, () => void] {
   const [animating, setAnimating] = useState(false)
   const [currAnimationIdx, setCurrAnimationIdx] = useState(0)
 
@@ -20,6 +20,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   const [_sortedInput, setSortedInput] = useState(initSortedInput)
   const [algoOutput, setAlgoOutput] = useState(initAlgoOutput)
   const [paintDone, setPaintDone] = useState(new Set<number>)
+  const [done, setDone] = useState(false)
 
   const [prevActiveElem, setPrevActiveElem] = useState<AnimationElem | undefined>(undefined)
   const animationSpeedMillis = speedMillis? speedMillis: calculateAnimationSpeedMillis(array.length)
@@ -36,8 +37,8 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   const [animations, setAnimation] = useState(generateStartingAnimation(array))
 
   const reset = (input?: number[]): void => {
-    console.log('reset(): input=',input)
     setAnimating(false)
+    setDone(false)
     setCurrAnimationIdx(0)
     setPaintDone(new Set<number>())
     if (input) {
@@ -65,6 +66,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
       // have we reached the end?
       if (currAnimationIdx === algoOutput.length) {
         setAnimating(false)
+        setDone(false)
         return
       }
 
@@ -107,5 +109,5 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
     }
   }, [algoOutput, animating, array.length, currAnimationIdx, prevActiveElem, paintDone, animationSpeedMillis])
 
-  return [animations, animating, reset, start, pause]
+  return [animations, animating, done, reset, start, pause]
 }

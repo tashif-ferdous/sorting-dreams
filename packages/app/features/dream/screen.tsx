@@ -4,7 +4,7 @@ import { mergeSort } from "../../sortingAlgos/mergeSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
-import { Player, NavProps } from "./components/player"
+import { Player } from "./components/player"
 import { useAnimation } from "./hooks/useAnimation"
 
 // https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
@@ -29,7 +29,7 @@ function generateArray(size=10, scale=2): number[] {
 export function DreamScreen() {
   const input = [10, 8, 4, 7, 3, 2, 6, 1, 5, 9]
   const [array, setArray] = useState(input) 
-  const [animations, animating, reset, start, pause] = useAnimation({
+  const [animations, animating, done, reset, start, pause] = useAnimation({
     array: array, 
     algorithm: mergeSort
   })
@@ -65,7 +65,8 @@ export function DreamScreen() {
       <Player 
         onGenerateArrayPressed={createArray} 
         onPlayPressed={start}
-        playPressable={!animating}
+        playPressable={!done}
+        playShowable={!animating}
         onPausePressed={pause}
         pausePressable={animating}
         onResetPressed={() => reset()}
