@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { View } from "../../design/view"
+import { bubbleSort } from "../../sortingAlgos/bubbleSort"
 import { mergeSort } from "../../sortingAlgos/mergeSort"
 import { quickSort } from "../../sortingAlgos/quickSort"
 import { selectionSort } from "../../sortingAlgos/selectionSort"
@@ -42,6 +43,11 @@ const algos: AlgoDisplay[] = [
     name: 'Quick Sort',
     algorithm: quickSort,
     description: 'Divide and conquer, by finding a random pivot to order around.'
+  },
+  {
+    name: 'Bubble Sort',
+    algorithm: bubbleSort,
+    description: 'Slow sort where the highest value bubbles to the top.'
   }
 ]
 
