@@ -6,10 +6,10 @@ import { Refresh } from "../icons/refresh";
 import { Plus } from "../icons/plus";
 
 export interface NavProps {
+  done: boolean,
   onGenerateArrayPressed: () => void,
   onPlayPressed: () => void,
   playPressable: boolean,
-  playShowable: boolean,
   onPausePressed: () => void,
   pausePressable: boolean,
   onResetPressed: () => void,
@@ -19,22 +19,24 @@ export function Player({
   onGenerateArrayPressed, 
   onPlayPressed, 
   playPressable, 
-  playShowable,
+  done,
   onPausePressed, 
   pausePressable,
   onResetPressed,
 }: NavProps): JSX.Element {
+  const showPlay = !done && playPressable
+  const showPause = !done && pausePressable
+  
   return <Row className='gap-2 border-2 border-rose-500 rounded-2xl'>
     <Pressable onPress={onGenerateArrayPressed} className='p-2'>
       <Plus />
     </Pressable>
-    {playShowable && (<Pressable className='p-2'
+    {showPlay && (<Pressable className='p-2'
       onPress={onPlayPressed}
-      disabled={!playPressable}
     >
       <Play />
     </Pressable>)}
-    {pausePressable && (<Pressable className='p-2'
+    {showPause && (<Pressable className='p-2'
       onPress={onPausePressed}
     >
       <Pause />

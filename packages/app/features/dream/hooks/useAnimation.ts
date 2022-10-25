@@ -77,7 +77,7 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
       // have we reached the end?
       if (currAnimationIdx === algoOutput.length) {
         setAnimating(false)
-        setDone(false)
+        setDone(true)
         return
       }
 

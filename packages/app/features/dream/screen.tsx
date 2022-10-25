@@ -77,10 +77,10 @@ export function DreamScreen() {
     </View>
     <View className="h-[15%]">
       <Player 
+        done={done}
         onGenerateArrayPressed={createArray} 
         onPlayPressed={start}
-        playPressable={!done}
-        playShowable={!animating}
+        playPressable={!animating}
         onPausePressed={pause}
         pausePressable={animating}
         onResetPressed={() => resetArray()}
