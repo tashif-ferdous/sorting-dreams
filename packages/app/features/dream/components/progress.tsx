@@ -6,7 +6,6 @@ interface ProgressProps {
 }
 
 export function Progress({percentage}: ProgressProps) {
-  console.log(percentage)
   const styles = StyleSheet.create({
     width: {
       width: `${percentage.toFixed(2)}%`

@@ -59,7 +59,7 @@ export function DreamScreen() {
   const [array, setArray] = useState(input) 
   const [animations, percentage, animating, done, resetArray, resetAlgo, start, pause] = useAnimation({
     array: array, 
-    algorithm: algos[algoDisplayIdx]!.algorithm 
+    initAlgorithm: algos[algoDisplayIdx]!.algorithm 
   })
 
   const createArray = () => {

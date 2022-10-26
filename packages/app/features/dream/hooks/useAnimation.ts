@@ -3,24 +3,24 @@ import { AnimationElem, Color } from '../../../sortingAlgos/types'
 
 export interface useAnimationProps {
   array: number[],
-  algorithm: (array: number[]) => [number[], AnimationElem[]]
+  initAlgorithm: (array: number[]) => [number[], AnimationElem[]]
   speedMillis?: number | undefined,
 }
 
 function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=5000) {
-  return Math.max((targetMillis / (numElems * scale)), 40)
+  return Math.max((targetMillis / (numElems * scale)), 50)
 }
 
 function percentage(index: number, array: any[]): number {
-  console.log('index=', index, 'len(array)=', array.length)
   return (index / (array.length)) * 100
 }
 
-export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], number, boolean, boolean, (array?: number[]) => void, (algo: (input: number[]) => [number[], AnimationElem[]]) => void,() => void, () => void] {
+export function useAnimation({array, initAlgorithm, speedMillis}: useAnimationProps): [AnimationElem[], number, boolean, boolean, (array?: number[]) => void, (algo: (input: number[]) => [number[], AnimationElem[]]) => void,() => void, () => void] {
   const [animating, setAnimating] = useState(false)
   const [currAnimationIdx, setCurrAnimationIdx] = useState(0)
 
   // run the algorithm initially and set state
+  const [algorithm, setAlgorithm] = useState(() => initAlgorithm)
   const [initSortedInput, initAlgoOutput]: [number[], AnimationElem[]] = algorithm(array)
   const [_sortedInput, setSortedInput] = useState(initSortedInput)
   const [algoOutput, setAlgoOutput] = useState(initAlgoOutput)
@@ -57,11 +57,13 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
   }
 
   const resetAlgo = (algo: (input: number[]) => [number[], AnimationElem[]]): void => {
+    console.log('resetting algo with:', algo.toString())
     setAnimating(false)
     setDone(false)
     setCurrAnimationIdx(0)
     setPaintDone(new Set<number>)
 
+    setAlgorithm(() => algo)
     const [sorted, animationsOutput]: [number[], AnimationElem[]] = algo(array)
     setAlgoOutput(animationsOutput)
     setSortedInput(sorted)
