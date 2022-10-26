@@ -1,6 +1,5 @@
 import { Row } from "../../../design/layout"
 import { AnimatedView, View } from "../../../design/view"
-import { MotiView } from "moti"
 import { AnimationElem, Color } from "../../../sortingAlgos/types"
 import { StyleSheet } from "react-native"
 import { useMemo } from "react"

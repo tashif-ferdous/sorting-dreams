@@ -11,7 +11,12 @@ function calculateAnimationSpeedMillis(numElems: number, scale=10, targetMillis=
   return Math.max((targetMillis / (numElems * scale)), 40)
 }
 
-export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], boolean, boolean, (array?: number[]) => void, (algo: (input: number[]) => [number[], AnimationElem[]]) => void,() => void, () => void] {
+function percentage(index: number, array: any[]): number {
+  console.log('index=', index, 'len(array)=', array.length)
+  return (index / (array.length)) * 100
+}
+
+export function useAnimation({array, algorithm, speedMillis}: useAnimationProps): [AnimationElem[], number, boolean, boolean, (array?: number[]) => void, (algo: (input: number[]) => [number[], AnimationElem[]]) => void,() => void, () => void] {
   const [animating, setAnimating] = useState(false)
   const [currAnimationIdx, setCurrAnimationIdx] = useState(0)
 
@@ -120,5 +125,5 @@ export function useAnimation({array, algorithm, speedMillis}: useAnimationProps)
     }
   }, [algoOutput, animating, array.length, currAnimationIdx, prevActiveElem, paintDone, animationSpeedMillis])
 
-  return [animations, animating, done, resetArray, resetAlgo, start, pause]
+  return [animations, percentage(currAnimationIdx, algoOutput), animating, done, resetArray, resetAlgo, start, pause]
 }

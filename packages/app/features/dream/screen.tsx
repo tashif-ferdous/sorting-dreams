@@ -7,6 +7,7 @@ import { selectionSort } from "../../sortingAlgos/selectionSort"
 import { AlgoDisplay, AlgoHeader } from "./components/algoHeader"
 import { BarChart } from "./components/bar"
 import { Player } from "./components/player"
+import { Progress } from "./components/progress"
 import { useAnimation } from "./hooks/useAnimation"
 
 // https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
@@ -56,7 +57,7 @@ const algoDisplayIdx = 2
 export function DreamScreen() {
   const input = [10, 8, 4, 7, 3, 2, 6, 1, 5, 9]
   const [array, setArray] = useState(input) 
-  const [animations, animating, done, resetArray, resetAlgo, start, pause] = useAnimation({
+  const [animations, percentage, animating, done, resetArray, resetAlgo, start, pause] = useAnimation({
     array: array, 
     algorithm: algos[algoDisplayIdx]!.algorithm 
   })
@@ -75,7 +76,7 @@ export function DreamScreen() {
     <View className="h-[75%] w-screen items-center pb-5">
       <BarChart input={animations}/> 
     </View>
-    <View className="h-[15%]">
+    <View className="h-[14%]">
       <Player 
         done={done}
         onGenerateArrayPressed={createArray} 
@@ -86,6 +87,8 @@ export function DreamScreen() {
         onResetPressed={() => resetArray()}
       />
     </View>
-    
+    <View className='h-[1%] w-screen'>
+      <Progress percentage={percentage} />
+    </View>
   </View>
 }
